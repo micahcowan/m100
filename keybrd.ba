@@ -1,0 +1,29 @@
+10 ' ***********************
+20 ' *                     *
+30 ' *  MUSICAL KEYBOARD   *
+40 ' *                     *
+50 ' ***********************
+60 '
+100 ST=1.059463: ' freq ratio of half-step
+105 BF=8000
+110 DIM FR%(18)
+120 NO$="AWSEDFTGYHUJKOLP;'"
+130 L=10
+195 ' * Set up note frequencies
+200 FOR I=1 TO 18
+210 FR%(I)=BF
+220 BF=BF/ST
+250 NEXT
+265 CLS
+270 PRINT:PRINT"  Play music on the keyboard!"
+275 PRINT  "  Press ESC to exit.":PRINT
+295 ' *** Main Program Loop
+300 A$=INKEY$
+310 IF A$="" THEN 300
+311 A=ASC(A$)
+313 IF A=27 THEN END
+315 IF A>=97 AND A<=122 THEN A=A-32:A$=CHR$(A)
+320 N=INSTR(NO$,A$)
+330 IF N<1 THEN 300
+340 SOUND FR%(N),L
+350 GOTO 300
