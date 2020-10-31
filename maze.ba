@@ -72,8 +72,9 @@
 3850 RETURN
 3995 ' * Find a random path point
 3996 ' * from which to branch
-4000 IF RE%=0 THEN STOP
-4010 CX%=RND(1)*MW%:CY%=RND(1)*MH%
+4000 IF RE%=0 THEN GOTO 7000
+4010 REM CX%=RND(1)*MW%:CY%=RND(1)*MH%
+4011 GOTO 4100 ' no RND, just scan
 4020 IF MZ%(CX%,CY%)=0 THEN GOTO 4100
 4030 GOSUB 3200:IF C%=0 THEN GOTO 4100
 4040 GOTO 300   ' found a forge point
@@ -111,3 +112,7 @@
 6850 CX%=CX%+1
 6860 MZ%(CX%,CY%)=MZ%(CX%,CY%)+W%
 6880 RE%=RE%-1:GOTO 300
+6998 ' * Done generating the maze.
+6999 ' * Beep once then loop forever.
+7000 BEEP
+7010 GOTO 7010
