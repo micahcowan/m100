@@ -1,0 +1,113 @@
+10 ' ********************
+20 ' *                  *
+30 ' *  Maze Generator  *
+40 ' *                  *
+50 ' ********************
+60 '
+100 SW%=240:SH%=64      ' scrn dimens
+105 CW%=4:  CH%=CW%     ' cell dimens
+110 MH%=(SH%-1)\CH%     ' maze dimens
+112 MW%=(SW%-1)\CW%
+115 RE%=MW%*MH%         ' unforged cells
+130 PW%=1+CW%*MW%       ' maze dimens
+140 PH%=1+CH%*MH%       '  in pixels
+144 BX%=(SW%-PW%)\2
+146 BY%=(SH%-PH%)\2
+150 DIM MZ%(MW%-1,MH%-1)
+160 DM%=(1=1)   ' draw maze as create?
+169 ' cell openings (cardinal directions)
+170 N%=1:S%=2:W%=4:E%=8
+179 ' random seed
+180 SD=VAL(RIGHT$(TIME$,2))
+185 FOR I=1 TO SD:T=RND(1):NEXT
+200 CLS
+205 ' draw a blank maze to start
+210 LINE (BX%,BY%)-(BX%+PW%-1,BY%+PH%-1),1,BF
+215 ' * First, choose a random start
+220 CX%=RND(1)*MW%:CY%=RND(1)*MH%
+225 RE%=RE%-1
+295 ' * (LOOP START) Now move by a cell
+300 IF DM% THEN GOSUB 3000
+305 GOSUB 3200
+310 IF C%=0 THEN GOTO 4000
+320 D%=RND(1)*C%
+400 GOSUB 3500:IF A%=0 THEN GOTO 420
+410 IF D%=0 THEN GOTO 6500 ELSE D%=D%-1
+420 GOSUB 3600:IF A%=0 THEN GOTO 440
+430 IF D%=0 THEN GOTO 6600 ELSE D%=D%-1
+440 GOSUB 3700
+450 IF A%<>0 AND D%=0 THEN GOTO 6700 ELSE GOTO 6800
+460 ' *** end maze construction loop
+470 STOP ' shouldn't ever reach here
+2995 ' * Draw open maze cell
+3000 TX%=BX%+1+CW%*CX%
+3010 TY%=BY%+1+CH%*CY%
+3020 LINE (TX%,TY%)-(TX%+CW%-2,TY%+CH%-2),0,BF
+3030 RETURN
+3195 ' * Count available path moves
+3200 GOSUB 3500:C%=A%
+3210 GOSUB 3600:C%=C%+A%
+3220 GOSUB 3700:C%=C%+A%
+3230 GOSUB 3800:C%=C%+A%
+3260 RETURN
+3495 ' * Can forge upwards?
+3500 A%=0
+3510 IF CY% <= 0 THEN 3550
+3520 IF MZ%(CX%,CY%-1)=0 THEN A%=1
+3550 RETURN
+3595 ' * Can forge downwards?
+3600 A%=0
+3610 IF CY% >= MH%-1 THEN 3650
+3620 IF MZ%(CX%,CY%+1)=0 THEN A%=1
+3650 RETURN
+3695 ' * Can forge westwards?
+3700 A%=0
+3710 IF CX% <= 0 THEN 3750
+3720 IF MZ%(CX%-1,CY%)=0 THEN A%=1
+3750 RETURN
+3795 ' * Can forge eastwards?
+3800 A%=0
+3810 IF CX% >= MW%-1 THEN 3850
+3820 IF MZ%(CX%+1,CY%)=0 THEN A%=1
+3850 RETURN
+3995 ' * Find a random path point
+3996 ' * from which to branch
+4000 IF RE%=0 THEN STOP
+4010 CX%=RND(1)*MW%:CY%=RND(1)*MH%
+4020 IF MZ%(CX%,CY%)=0 THEN GOTO 4100
+4030 GOSUB 3200:IF C%=0 THEN GOTO 4100
+4040 GOTO 300   ' found a forge point
+4095 ' keep scanning for a forge point
+4100 CX%=CX%+1
+4110 IF CX%<MW% THEN GOTO 4020
+4120 CX%=0:CY%=CY%+1
+4130 IF CY%>=MH% THEN CY%=0
+4140 GOTO 4020
+6495 ' * forge upwards
+6500 IF NOT DM% THEN GOTO 6540
+6530 LINE (TX%,TY%-1)-(TX%+CW%-2,TY%-1),0
+6540 MZ%(CX%,CY%)=MZ%(CX%,CY%)+N%
+6550 CY%=CY%-1
+6560 MZ%(CX%,CY%)=MZ%(CX%,CY%)+S%
+6580 RE%=RE%-1:GOTO 300
+6595 ' * forge downwards
+6600 IF NOT DM% THEN GOTO 6640
+6630 LINE (TX%,TY%+CH%-1)-(TX%+CW%-2,TY%+CH%-1),0
+6640 MZ%(CX%,CY%)=MZ%(CX%,CY%)+S%
+6650 CY%=CY%+1
+6660 MZ%(CX%,CY%)=MZ%(CX%,CY%)+N%
+6680 RE%=RE%-1:GOTO 300
+6695 ' * forge westwards
+6700 IF NOT DM% THEN GOTO 6740
+6730 LINE (TX%-1,TY%)-(TX%-1,TY%+CH%-2),0
+6740 MZ%(CX%,CY%)=MZ%(CX%,CY%)+W%
+6750 CX%=CX%-1
+6760 MZ%(CX%,CY%)=MZ%(CX%,CY%)+E%
+6780 RE%=RE%-1:GOTO 300
+6795 ' * forge eastwards
+6800 IF NOT DM% THEN GOTO 6840
+6830 LINE (TX%+CW%-1,TY%)-(TX%+CW%-1,TY%+CH%-2),0
+6840 MZ%(CX%,CY%)=MZ%(CX%,CY%)+E%
+6850 CX%=CX%+1
+6860 MZ%(CX%,CY%)=MZ%(CX%,CY%)+W%
+6880 RE%=RE%-1:GOTO 300
