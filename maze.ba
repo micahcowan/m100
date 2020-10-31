@@ -15,6 +15,7 @@
 146 BY%=(SH%-PH%)\2
 150 DIM MZ%(MW%-1,MH%-1)
 160 DM%=(1=1)   ' draw maze as create?
+162 PS%=(1=1)   ' play sounds?
 169 ' cell openings (cardinal directions)
 170 N%=1:S%=2:W%=4:E%=8
 179 ' random seed
@@ -79,7 +80,8 @@
 4030 GOSUB 3200:IF C%=0 THEN GOTO 4100
 4040 GOTO 300   ' found a forge point
 4095 ' keep scanning for a forge point
-4100 CX%=CX%+1
+4100 IF PS% THEN SOUND 16000,2
+4105 CX%=CX%+1
 4110 IF CX%<MW% THEN GOTO 4020
 4120 CX%=0:CY%=CY%+1
 4130 IF CY%>=MH% THEN CY%=0
@@ -90,6 +92,7 @@
 6540 MZ%(CX%,CY%)=MZ%(CX%,CY%)+N%
 6550 CY%=CY%-1
 6560 MZ%(CX%,CY%)=MZ%(CX%,CY%)+S%
+6570 IF PS% THEN SOUND 1000+(RE%/(MW%*MH%))*15000,2
 6580 RE%=RE%-1:GOTO 300
 6595 ' * forge downwards
 6600 IF NOT DM% THEN GOTO 6640
@@ -97,6 +100,7 @@
 6640 MZ%(CX%,CY%)=MZ%(CX%,CY%)+S%
 6650 CY%=CY%+1
 6660 MZ%(CX%,CY%)=MZ%(CX%,CY%)+N%
+6670 IF PS% THEN SOUND 1000+(RE%/(MW%*MH%))*15000,2
 6680 RE%=RE%-1:GOTO 300
 6695 ' * forge westwards
 6700 IF NOT DM% THEN GOTO 6740
@@ -104,6 +108,7 @@
 6740 MZ%(CX%,CY%)=MZ%(CX%,CY%)+W%
 6750 CX%=CX%-1
 6760 MZ%(CX%,CY%)=MZ%(CX%,CY%)+E%
+6770 IF PS% THEN SOUND 1000+(RE%/(MW%*MH%))*15000,2
 6780 RE%=RE%-1:GOTO 300
 6795 ' * forge eastwards
 6800 IF NOT DM% THEN GOTO 6840
@@ -111,8 +116,16 @@
 6840 MZ%(CX%,CY%)=MZ%(CX%,CY%)+E%
 6850 CX%=CX%+1
 6860 MZ%(CX%,CY%)=MZ%(CX%,CY%)+W%
+6870 IF PS% THEN SOUND 1000+(RE%/(MW%*MH%))*15000,2
 6880 RE%=RE%-1:GOTO 300
 6998 ' * Done generating the maze.
 6999 ' * Beep once then loop forever.
-7000 BEEP
-7010 GOTO 7010
+7000 IF NOT PS% THEN GOTO 7100
+7010 READ A:READ B
+7020 IF B=0 THEN GOTO 7100
+7030 SOUND A,B
+7040 GOTO 7010
+7100 GOTO 7100
+7999 ' * End song
+8000 DATA 5332,10,7109,5,7109,5,6319,10,7109,10,0,10,7998,4,5652,10,8478,4,5332,10
+9000 DATA 0,0
