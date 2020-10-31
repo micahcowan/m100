@@ -1,4 +1,0 @@
-10 MSG$="Welcome to Micah's TRS-80 Model 100!"
-20 FOR I=0 TO 4:PRINT TAB(I);MSG$:NEXT I
-30 LINE INPUT A$
-50 MENU
