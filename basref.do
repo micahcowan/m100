@@ -1,3 +1,17 @@
+BASIC Searchable Reference Document
+
+This document presents information about BASIC commands, in a suitable format for convenience of use with the built-in SCHEDL program.
+
+If you rename this file to NOTE.DO, then you can perform the following operations within SCHEDL:
+ - Provide a summary of the available commands with:
+     Find !#
+ - Provide all details of a command with:
+     Find #CMD
+   (add a space after to avoid commands that are also prefixes of other commands)
+ - To show example usage of a command (where available):
+     Find X#CMD
+
+-- Entries follow --
 !#ABS Absolute Value
  #ABS  ABS(numeric expression)
  #ABS Returns the absolute value of the
