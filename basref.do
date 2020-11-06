@@ -99,3 +99,124 @@ X#CLOAD? program currently in memory.
  #CSAVEM The 'entry' addr is optional; defaults
  #CSAVEM to 'start'.
 !#CSNG Convert to Single Precision
+!#CSRLIN Vertical Cursor Position
+ #CSRLIN This function returns the vertical pos
+ #CSRLIN (line number) of the Cursor, where 0
+ #CSRLIN is the top line and 7 is the bottom.
+X#CSRLIN  10 CLS: A% = CSRLIN
+X#CSRLIN clears the Screen and assigns A% the
+X#CSRLIN value 0.
+!#DATA Define a Data Set
+!#DATE$ Current Date
+X#DATE$  DATE$ = "11/02/82"
+X#DATE$ Sets the date to November 11, 1982.
+!#DAY$ Current Day of Week
+ #DAY$ Valid strings include:
+ #DAY$  Mon Tue Wed Thu Fri Sat Sun
+!#DEFDBL Define Double-Precision Variables
+ #DEFDBL  DEFDBL 'letter list'
+ #DEFDBL DEFDBL defines all of the variables
+ #DEFDBL which begin with the letters in
+ #DEFDBL 'letter list' to be double-precision
+ #DEFDBL variables. 'letter list' consist of
+ #DEFDBL individual letters and/or letter ranges
+ #DEFDBL of the form 'letter1' - 'letter2'.
+!#DEFINT Define Integer Variables
+ #DEFINT See DEFDBL.
+!#DEFSNG Define Single-Precision Variables
+ #DEFSNG See DEFDBL.
+!#DEFSTR Define String Variables
+ #DEFSTR See DEFDBL.
+!#DIM Define Array Size
+ #DIM  DIM 'variable name'('dimensions') #DIM Defines a multi-dimensional, zero-indexed array. To redimension an array, you must first use the command CLEAR (this destroys all variable values).
+!#EDIT Edit a BASIC Program
+ #EDIT  EDIT 'line number range'
+ #EDIT EDIT enters the text editor using the
+ #EDIT lines given by 'line number range'.
+ #EDIT line number range may be:
+ #EDIT  null         edit the entire program.
+ #EDIT  line1-line2  edit the specified lines.
+ #EDIT  -line2       edit from start to line2.
+ #EDIT  line1-       edit from line1 to end.
+ #EDIT  .            edit last-accessed line
+ #EDIT               (last edited, entered,
+ #EDIT               listed, etc).
+!#END End Execution
+!#EOF Test for End-of-File
+ #EOF  EOF('file number')
+ #EOF EOF tests for an end-of-file condition
+ #EOF on RAM, cassette, or communications
+ #EOF files. Returns true if the specified
+ #EOF 'file number' is for a file that has
+ #EOF reached end-of-life condition, false
+ #EOF otherwise.
+!#ERL Get Line Number of Error
+ #ERL ERL returns the line number of the last
+ #ERL error - or the value 65535 if the last
+ #ERL error was from a direct command. This
+ #ERL command is useful in conjunction with
+ #ERL the ON ERROR GOTO command.
+X#ERL  100 ON ERROR GOTO 2000
+X#ERL  .
+X#ERL  .
+X#ERL  2000 IF ERR = 23 THEN RESUME ELSE PRINT "Error";ERR;"in line";ERL:STOP
+!#ERR Get Error Code Number
+ #ERR Returns the error code number of the
+ #ERR last error. See ERL for an example.
+!#ERROR Simulate an Error
+ #ERROR  ERROR 'numeric expression'
+ #ERROR This command simulates the error
+ #ERROR specified by 'numeric expression'.
+ #ERROR BASIC behaves just nas if your program
+ #ERROR had committed the error.
+X#ERROR  100 ERROR 10
+X#ERROR Prints "DD Error in 100" and stops
+X#ERROR execution of the program.
+!#EXP Exponential (Antilog)
+!#FILES Display File Names
+ #FILES This command will cause BASIC to
+ #FILES display all of the files currently
+ #FILES stored in RAM without exiting BASIC.
+!#FIX Truncate Real Numbers
+ #FIX  FIX('numeric expression')
+ #FIX FIX returns the whole number portion
+ #FIX of 'numeric expression'. Note that its
+ #FIX behavior differs from INT in the case
+ #FIX of negative numbers, in which case
+ #FIX INT will return a number lower in value
+ #FIX (higher in magnitude) than its arg.
+!#FOR Establish Program Looping
+!#FRE Free Memory Space
+ #FRE  FRE('dummy expression')
+ #FRE FRE returns the current amount of
+ #FRE unused numeric memory in bytes when
+ #FRE 'dummy expression' is numeric, and the
+ #FRE current total amount of unused string
+ #FRE space when 'dummy expression' is string
+ #FRE type.
+X#FRE  PRINT FRE(0)
+X#FRE  ? FRE("")
+!#GOSUB Call a BASIC Subroutine
+!#GOTO Branch Program Execution
+!#HIMEM Get High Memory Address
+ #HIMEM This function returns the top address
+ #HIMEM of memory available to BASIC. You may
+ #HIMEM change this value with the CLEAR
+ #HIMEM command.
+X#HIMEM  PRINT HIMEM
+!#IF Test Relational Expression
+ #IF Model 100 BASIC supports IF, THEN
+ #IF and ELSE.
+!#INKEY$ Poll Keyboard
+ #INKEY$ This function returns the string value
+ #INKEY$ of the key currently pressed, if any.
+ #INKEY$ If no key is pressed, the function
+ #INKEY$ returns the null string ("").
+ #INKEY$ In either case, BASIC doesn't wait for
+ #INKEY$ keyboard input, but goes to the next
+ #INKEY$ statement.
+ #INKEY$ (NOTE: if you press an undefined
+ #INKEY$ Function Key, PASTE, or LABEL, INKEY$
+ #INKEY$ returns an ASCII 0 with a length
+ #INKEY$ of one.)
+!#INP Input From a Port
