@@ -1,0 +1,23 @@
+0 ' spirographs
+100 TAU=8*ATN(1)
+105 ' radius of larger, 'A' circle
+110 AR=31
+115 ' radius of smaller, 'B' circle
+120 BR=1+AR/2
+125 ' size of step to take
+130 SS=4
+135 ' center of screen
+140 SX=120:SY=32
+145 ' start pos, tilt, and progress
+150 P=0
+160 TI=-TAU/8
+170 X0=-1:Y0=-1
+180 CLS
+190 CR=AR-BR:PA=TI:PB=TI:SA=SS/AR:SB=SS/BR
+195 ' ***
+200 X1=SX+CR*COS(PA)+BR*COS(PB)
+250 Y1=SY+CR*SIN(PA)+BR*SIN(PB)
+390 IF X0=-1 THEN 450
+400 LINE (X0,Y0)-(X1,Y1)
+450 X0=X1:Y0=Y1:PA=PA+SA:PB=PB-SB
+500 GOTO 200
