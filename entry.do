@@ -7,7 +7,7 @@
 8  ' *                               *
 9  ' *********************************
 10 '
-20 NM$="NOTE.DO"
+20 NM$="BASREF.DO"
 30 OPEN NM$ FOR APPEND AS 1
 40 CLS
 45 PRINT FRE(0);" bytes remaining."
