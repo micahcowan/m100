@@ -12,25 +12,34 @@ If you rename this file to NOTE.DO, then you can perform the following operation
      Find X#CMD
 
 -- Entries follow --
-!#ABS ABS(X)
-!#ASC ASC(C$)
-!#ATN ATN(X)
- #ATN Arctangent. Given the ratio of opposite/
- #ATN adjacent, returns the angle. Ranges from
- #ATN -PI to PI. ATN(1)*4 gives PI.
+!#ABS Absolute Value
+ #ABS  ABS(numeric expression)
+ #ABS Returns the absolute value of the
+ #ABS numeric expression.
+!#ASC ASCII Code
+ #ASC  ASC(string)
+ #ASC Returns the code value of the first
+ #ASC character in the string.
+!#ATN Arctangent
+ #ATN  ATN(numeric expression)
+ #ATN Returns the arctangent of numeric expression (in radians). The result ranges from -PI to PI.
+X#ATN  ARC(1)
+X#ATN evaluates to ® the value of PI.
 !#BEEP Emit a Tone
-!#CALL CALL address, expr1, expr2
+!#CALL Call a Machine Level Subroutine
+ #CALL  CALL address, expr1, expr2
  #CALL Calls a machine level subroutine
  #CALL beginning at 'address'. The A register
  #CALL is set to the value of expr1 and the
- #CALL HL register to expr2.
+ #CALL HL register to expr2. expr1 in [0,255]
+ #CALL expr2 in [-32768,65535]
 X#CALL  CALL 60000,10,VARPTR(A%)
 X#CALL calls a subroutine beginning at
 X#CALL address 60000. Upon entry, reg A
 X#CALL contains 10, and register HL
 X#CALL the address of the variable A%.
 !#CDBL Convert to Double-Precision
-!#CHR$ CHR$("A")
+!#CHR$ Character Value
 !#CINT Convert to Integer
 !#CLEAR Clear Variables and Allocate String Space
  #CLEAR  CLEAR string space, high memory
@@ -45,85 +54,169 @@ X#CALL the address of the variable A%.
  #CLEAR from being overwritten - e.g. for
  #CLEAR writing a machine language program
  #CLEAR to later save as a .CO command.
-!#CLOAD CLOAD "filename", [ R ]
- #CLOAD  is identical to
- #CLOAD  LOAD "CAS:filename", [ R ]
+!#CLOAD Load a Program From Cassette
+ #CLOAD  CLOAD "filename", R
+ #CLOAD is identical to
+ #CLOAD  LOAD "CAS:filename", R
+X#CLOAD  CLOAD
+X#CLOAD loads the first BASIC program
+X#CLOAD found on the cassette tape.
 !#CLOAD? Verify a Cassette Load
- #CLOAD?  CLOAD? "file"
+ #CLOAD?  CLOAD? filename
+ #CLOAD? Compares 'filename' with the BASIC prog
+ #CLOAD? currently in memory.
+X#CLOAD?  CLOAD? "ACCT"
+X#CLOAD? compares the cassette file ACCT with the
+X#CLOAD? program currently in memory.
 !#CLOADM Load a Machine-Language Program From Cassette
  #CLOADM  CLOADM "filename"
-!#CLOSE CLOSE 1,4,5
- #CLOSE CLOSE   ' all
+!#CLOSE Close Open Files
+ #CLOSE  CLOSE 'file number list'
+ #CLOSE Closes the specified files. List is
+ #CLOSE optional; if omitted, BASIC closes all
+ #CLOSE open files.
 !#CLS Clear Screen
 !#COM Enable/Disable Communications Interrupt
  #COM  COM ON or OFF or STOP
- #COM STOP disables the interrupt, but triggers
- #COM later on COM ON if data was received while
- #COM sopped.
+ #COM Enables or disables the ON COM interrupt.
+ #COM OFF disables the interrupt.
+ #COM STOP disables the interrupt. But BASIC
+ #COM "remembers" that a character was
+ #COM received, immediately jumping to the sub
+ #COM if COM ON is issued later.
 !#CONT Continue Execution
  #CONT CONT resumes execution of a program
  #CONT after you have pressed BREAK, or after
  #CONT BASIC has encountered a STOP command.
-!#COS COS(X)
+!#COS Cosine
 !#CSAVE Save a Program on Cassette
- #CSAVE  CSAVE "filename", [ A ]
+ #CSAVE  CSAVE "filename", A
  #CSAVE Saves the current BASIC program to tape.
- #CSAVE if A present saves in ASCII otherwise tokens
+ #CSAVE A is optional; if present saves in ASCII
+ #CSAVE otherwise saves in tokenized format.
 !#CSAVEM Save a Machine Language Program to Cassette
- #CSAVEM  CSAVEM "filename",'start','end' [,'entry']
+ #CSAVEM  CSAVEM "filename",'start','end','entry'
+ #CSAVEM The 'entry' addr is optional; defaults
+ #CSAVEM to 'start'.
 !#CSNG Convert to Single Precision
-!#CSRLIN returns the vertical cursor pos, 0-7
+!#CSRLIN Vertical Cursor Position
+ #CSRLIN This function returns the vertical pos
+ #CSRLIN (line number) of the Cursor, where 0
+ #CSRLIN is the top line and 7 is the bottom.
+X#CSRLIN  10 CLS: A% = CSRLIN
+X#CSRLIN clears the Screen and assigns A% the
+X#CSRLIN value 0.
 !#DATA Define a Data Set
 !#DATE$ Current Date
+X#DATE$  DATE$ = "11/02/82"
+X#DATE$ Sets the date to November 11, 1982.
 !#DAY$ Current Day of Week
+ #DAY$ Valid strings include:
+ #DAY$  Mon Tue Wed Thu Fri Sat Sun
 !#DEFDBL Define Double-Precision Variables
  #DEFDBL  DEFDBL 'letter list'
  #DEFDBL DEFDBL defines all of the variables
- #DEFDBL which begin with specified letters
- #DEFDBL to be double-precision.
-X#DEFDBL  DEFDBL A,E,M-P
+ #DEFDBL which begin with the letters in
+ #DEFDBL 'letter list' to be double-precision
+ #DEFDBL variables. 'letter list' consist of
+ #DEFDBL individual letters and/or letter ranges
+ #DEFDBL of the form 'letter1' - 'letter2'.
 !#DEFINT Define Integer Variables
  #DEFINT See DEFDBL.
 !#DEFSNG Define Single-Precision Variables
  #DEFSNG See DEFDBL.
 !#DEFSTR Define String Variables
  #DEFSTR See DEFDBL.
-!#DIM multi-dimensional, zero-indexed.
+!#DIM Define Array Size
+ #DIM  DIM 'variable name'('dimensions') #DIM Defines a multi-dimensional, zero-indexed array. To redimension an array, you must first use the command CLEAR (this destroys all variable values).
 !#EDIT Edit a BASIC Program
  #EDIT  EDIT 'line number range'
-X#EDIT  EDIT .  ' edit last-accessed line
+ #EDIT EDIT enters the text editor using the
+ #EDIT lines given by 'line number range'.
+ #EDIT line number range may be:
+ #EDIT  null         edit the entire program.
+ #EDIT  line1-line2  edit the specified lines.
+ #EDIT  -line2       edit from start to line2.
+ #EDIT  line1-       edit from line1 to end.
+ #EDIT  .            edit last-accessed line
+ #EDIT               (last edited, entered,
+ #EDIT               listed, etc).
 !#END End Execution
-!#EOF  EOF(1) ' true if file 1 at EOF
+!#EOF Test for End-of-File
+ #EOF  EOF('file number')
+ #EOF EOF tests for an end-of-file condition
+ #EOF on RAM, cassette, or communications
+ #EOF files. Returns true if the specified
+ #EOF 'file number' is for a file that has
+ #EOF reached end-of-life condition, false
+ #EOF otherwise.
 !#ERL Get Line Number of Error
+ #ERL ERL returns the line number of the last
+ #ERL error - or the value 65535 if the last
+ #ERL error was from a direct command. This
+ #ERL command is useful in conjunction with
+ #ERL the ON ERROR GOTO command.
+X#ERL  100 ON ERROR GOTO 2000
+X#ERL  .
+X#ERL  .
 X#ERL  2000 IF ERR = 23 THEN RESUME ELSE PRINT "Error";ERR;"in line";ERL:STOP
 !#ERR Get Error Code Number
- #ERR See ERL for an example.
-!#ERROR 100 ERROR 10  ' "DO Error in 100"
+ #ERR Returns the error code number of the
+ #ERR last error. See ERL for an example.
+!#ERROR Simulate an Error
+ #ERROR  ERROR 'numeric expression'
+ #ERROR This command simulates the error
+ #ERROR specified by 'numeric expression'.
+ #ERROR BASIC behaves just nas if your program
+ #ERROR had committed the error.
+X#ERROR  100 ERROR 10
+X#ERROR Prints "DD Error in 100" and stops
+X#ERROR execution of the program.
 !#EXP Exponential (Antilog)
 !#FILES Display File Names
-!#FIX FIX(X) returns the whole number portion
- #FIX of X. Note that its behavior differs
- #FIX from INT in the case when X is negative
- #FIX (INT returns floor in that case)
+ #FILES This command will cause BASIC to
+ #FILES display all of the files currently
+ #FILES stored in RAM without exiting BASIC.
+!#FIX Truncate Real Numbers
+ #FIX  FIX('numeric expression')
+ #FIX FIX returns the whole number portion
+ #FIX of 'numeric expression'. Note that its
+ #FIX behavior differs from INT in the case
+ #FIX of negative numbers, in which case
+ #FIX INT will return a number lower in value
+ #FIX (higher in magnitude) than its arg.
 !#FOR Establish Program Looping
-!#FRE FRE('dummy expression')
- #FRE returns the current amount of
- #FRE unused numeric memory when dummy expr is
- #FRE numeric, and string memory when it's
- #FRE string type.
+!#FRE Free Memory Space
+ #FRE  FRE('dummy expression')
+ #FRE FRE returns the current amount of
+ #FRE unused numeric memory in bytes when
+ #FRE 'dummy expression' is numeric, and the
+ #FRE current total amount of unused string
+ #FRE space when 'dummy expression' is string
+ #FRE type.
 X#FRE  PRINT FRE(0)
 X#FRE  ? FRE("")
 !#GOSUB Call a BASIC Subroutine
 !#GOTO Branch Program Execution
 !#HIMEM Get High Memory Address
  #HIMEM This function returns the top address
- #HIMEM of memory available to BASIC. Change
- #HIMEM this value with the CLEAR command.
+ #HIMEM of memory available to BASIC. You may
+ #HIMEM change this value with the CLEAR
+ #HIMEM command.
+X#HIMEM  PRINT HIMEM
 !#IF Test Relational Expression
  #IF Model 100 BASIC supports IF, THEN
  #IF and ELSE.
 !#INKEY$ Poll Keyboard
- #INKEY$ returns immediately, empty if no key
- #INKEY$ is pressed.
-X#INKEY$ A$ = INKEY$
+ #INKEY$ This function returns the string value
+ #INKEY$ of the key currently pressed, if any.
+ #INKEY$ If no key is pressed, the function
+ #INKEY$ returns the null string ("").
+ #INKEY$ In either case, BASIC doesn't wait for
+ #INKEY$ keyboard input, but goes to the next
+ #INKEY$ statement.
+ #INKEY$ (NOTE: if you press an undefined
+ #INKEY$ Function Key, PASTE, or LABEL, INKEY$
+ #INKEY$ returns an ASCII 0 with a length
+ #INKEY$ of one.)
 !#INP Input From a Port
