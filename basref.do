@@ -220,3 +220,115 @@ X#HIMEM  PRINT HIMEM
  #INKEY$ returns an ASCII 0 with a length
  #INKEY$ of one.)
 !#INP Input From a Port
+!#INPUT Input Data From Keyboard
+ #INPUT  INPUT "prompt", 'var list'
+ #INPUT INPUT blocks and waits for keyboard input. The values you
+ #INPUT enter must correspond in number and type, to the variables
+ #INPUT in 'var list'. Vars are separated by commas.
+ #INPUT You may either input all vars on one line, separated by
+ #INPUT commas, or you can hit ENTER after each one, prompted
+ #INPUT each time by "?". For string variables, you may use quotes, but they are only required if you wish to include commas, colons, or leading blanks.
+!#INPUT # Input From A File
+!#INPUT$ Input Characters From the Keyboard/A File
+ #INPUT$  INPUT$('num')
+ #INPUT$  INPUT$('num','file')
+ #INPUT$ Function returning a string of 'num' characters from the
+ #INPUT$ keyboard or from a file. INPUT$ accepts all keys as input except BREAK. It does not echo keyboard input.
+X#INPUT$ 10 A$ = INPUT$(5)
+!#INSTR Search A String
+ #INSTR  INSTR('start position','search string','match string')
+ #INSTR INSTR searches 'search string' for the first occurrence
+ #INSTR of 'match string', beginnint at 'start position'
+ #INSTR (OPTIONAL: 1 if absent). Returns zero when no match
+ #INSTR is found.
+X#INSTR PRINT INSTR("dimethylsulfate","sulfate")
+X#INSTR  => 9
+!#INT Get Whole Number Representation
+!#IPL Define Warm Start Program
+ #IPL  IPL "filename"
+ #IPL The named file is run automatically whenever you turn on
+ #IPL your Model 100. IPL will execute properly only if the Computer is turned off while in BASIC.
+!#KEY Define Function Keys
+ #KEY  KEY 'function key number', 'string expr'
+ #KEY Where 'function key number' is a number from 1 to 8, and 'string expression' is 15 chars or less.
+X#KEY  KEY 6,"?TIME$" + CHR$(13)
+X#KEY defines Function Key 6 as ?TIME$ followed by carriage return. Now whenever you press Fn Key 6, BASIC returns the time.
+X#KEY To reset the function keys to the cold start default, make the following calls:
+X#KEY  CALL 23164,0,23366
+X#KEY  CALL 27795
+!#KEY LIST List Function Key Definitions
+!#KEY ON/OFF/STOP Enable/Disable Function Key Interrupts
+ #KEY ON/OFF/STOP  KEY ('fn key number') ON/OFF/STOP
+ #KEY ON/OFF/STOP ON enables the interrupt so that if you press a Function Key, BASIC branches to the ON KEY subroutine.
+ #KEY ON/OFF/STOP OFF disables the interrupt.
+ #KEY ON/OFF/STOP STOP disables the interrupt, but branches to ON KEY on re-enabling, if a key was pressed while disabled.
+X#KEY ON/OFF/STOP  100 KEY (2) ON
+X#KEY ON/OFF/STOP enables Fn Key 2.
+X#KEY ON/OFF/STOP  100 KEY ON
+X#KEY ON/OFF/STOP enables all Function Keys.
+X#KEY ON/OFF/STOP  100 KEY (4) OFF
+X#KEY ON/OFF/STOP disables Fn Key 4.
+!#KILL Delete a RAM File
+!#LCOPY Copy Screen to Printer
+!#LEFT$ Return L:eft Portion of a String
+ #LEFT$  LEFT$('string','length')
+!#LEN Get Size of a String
+ #LEN  LEN('string')
+!#LET Assignment Statement
+!#LINE Draw a Line on the Screen
+ #LINE  LINE (x1,y1)-(x2,y2),'switch',BF
+ #LINE Draws a line using the specified start and end coordinates.
+ #LINE x1 and x2 range from 0 to 239; y1 and y2 from 0 to 63.
+ #LINE (x1,y1) is optional; if omitted the line will start from the end of the previous LINE command.
+ #LINE 'Switch' is a numeric expr and is optional. Odd (default) indicates to set the pixels in the line, even indicates that pixels shall be unset.
+ #LINE B tells BASIC to draw a hollow box instead of a line.
+ #LINE BF tells BASIC to draw a filled box.
+ #LINE Both B and BF require you to specify 'switch'.
+X#LINE  10 LINE (20,20)-(50,63)
+X#LINE  20 LINE -(30,30)
+X#LINE draws lines from (20,20) to (50,63) and from there to (30,30).
+!#LIST List Program on the Screen
+ #LIST See EDIT for how to use the line number range.
+!#LLIST List Program on the Printer
+!#LINE INPUT Input a String from the Keyboard
+ #LINE INPUT  LINE INPUT "prompt";'string variable'
+ #LINE INPUT Also accepts  #'file',  at start.
+ #LINE INPUT LINE INPUT differs from INPUT in that:
+ #LINE INPUT  BASIC doesn't display a ? prompt.
+ #LINE INPUT  You may have only one var name
+ #LINE INPUT  BASIC assigns all input, including commas, leading blanks, etc, to string variable.
+!#LOAD Load a BASIC Program
+ #LOAD  LOAD "devince:filename or configuration",R
+ #LOAD R is optional, and indicates that the loaded program should be run immediately.
+!#LOADM Load a Machine-Language Program
+ #LOADM  LOADM "RAM/CAS:filename"
+ #LOADM Loads a M/L program at the address specified when it was saved.
+!#LOG Natural Logarithm
+!#LPOS Printer Column Position
+ #LPOS  LPOS('dummy numeric expression')
+!#LPRINT Print Data on Printer
+!#LPRINT USING Print Formatted Data on Printer
+ #LPRINT USING See PRINT USING.
+!#MAXFILES Maximum Number of Files
+ #MAXFILES Contains the current maximum number of files. You may access MAXFILES like any numeric variable. Default value is 1.
+!#MAXRAM Amount of Memory
+ #MAXRAM Contains the memory size of your Model 100.
+X#MAXRAM  CLEAR 1000,MAXRAM
+X#MAXRAM clears 1000 bytes for string storage and sets the high memory to the max amount for your machine.
+!#MDM ON/OFF/STOP Enable/Disable Modem Interrupt
+!#MENU Return to Menu
+ #MENU MENU exits BASIC and returns you to the main menu.
+!#MERGE Merge Two Programs
+ #MERGE  MERGE "device:filename or configuration"
+ #MERGE Merges the lines from the ASCII formatted file named by the argument, with the lines of the current program.
+ #MERGE If BASIC finds a duplicate line number, the line from the MERGE argument replaces the existing line from the currently-loaded program.
+!#MID$ Get/Replace Middle Characters of String
+X#MID$  10 HASH$ = MID$(A$,2,2)
+X#MID$ if A$ is "00349953", then this statement assigns "34" to HASH$.
+X#MID$  10 MID$(A$,5) = "FF"
+X#MID$ if A$ is "00000000", this this stmt changes A$ to "0000FF00".
+!#MOTOR Turn Cassette Motor On and Off
+ #MOTOR  MOTOR ON/OFF
+!#NAME...AS Rename a RAM File
+ #NAME...AS  NAME "file1" AS "file2"
+!#NEW Erase the Current Program
